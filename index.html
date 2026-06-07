@@ -708,7 +708,9 @@
       });
     });
 
-    // Form submit — POST to /api/contact serverless function
+    // Web3Forms — sends enquiries directly to esther@feigrowthlab.com
+    const W3F_KEY = 'REPLACE_WITH_WEB3FORMS_KEY';
+
     async function handleSubmit(e) {
       e.preventDefault();
       const form = e.target;
@@ -721,24 +723,28 @@
       text.textContent = 'Sending...';
       if (errorEl) errorEl.style.display = 'none';
 
+      const fname = form.fname.value.trim();
+      const lname = form.lname.value.trim();
+      const email = form.email.value.trim();
+
       try {
-        const res = await fetch('/api/contact', {
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
-            fname: form.fname.value,
-            lname: form.lname.value,
-            email: form.email.value,
-            phone: form.phone.value,
-            interest: form.interest.value,
-            message: form.message.value,
+            access_key: W3F_KEY,
+            subject: `Property Enquiry — Tema Community 26 — ${fname} ${lname}`,
+            from_name: `${fname} ${lname}`,
+            email,
+            phone: form.phone.value || 'Not provided',
+            intended_use: form.interest.value || 'Not specified',
+            message: form.message.value || 'No message',
+            botcheck: '',
           }),
         });
 
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || 'Something went wrong. Please try again.');
-        }
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Something went wrong. Please try again.');
 
         btn.style.display = 'none';
         success.style.display = 'flex';
