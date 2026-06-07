@@ -660,6 +660,45 @@ h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; }
   padding: 0 max(1.5rem, calc((100vw - 1180px) / 2));
 }
 
+/* ── VIDEO SECTION ── */
+.video-section { background: var(--cream-alt); }
+
+.videos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.video-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.video-wrap video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--navy);
+  box-shadow: var(--shadow-md);
+  display: block;
+}
+
+.video-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .videos-grid { grid-template-columns: 1fr; }
+}
+
 /* ── LIGHTBOX ── */
 .lightbox {
   position: fixed;
